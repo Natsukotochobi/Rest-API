@@ -12,7 +12,7 @@ import java.util.Map;
 @RestController
 public class NameController {
     @GetMapping("/names")
-    public List<String> getNames() {
+    public List<String> getNames(String name) {
         return List.of("koyama", "tanaka");
     }
 
