@@ -1,6 +1,8 @@
 package com.raisetech.restapi;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -25,6 +27,15 @@ public class NameController {
                 .toUri();
         return ResponseEntity.created(url).body("name successfully created");
     }
+        @PostMapping("/names")
+        public String confirm(@Validated CreateForm form, BindingResult bindingResult) {
+            if (bindingResult.hasErrors()) {
+                return "入力値が不正です。";
+            }else{
+                return "ok";
+            }
+        }
+
 
     @PatchMapping("/names/{id}")
     public ResponseEntity<Map<String,String>> update(@PathVariable("id") int id, @RequestBody UpdateForm form){
