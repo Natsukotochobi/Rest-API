@@ -19,31 +19,26 @@ public class NameController {
     }
 
     @PostMapping("/names")
-    public ResponseEntity<String> create(@RequestBody CreateForm form) {
+    public ResponseEntity<String> create(@Validated @RequestBody CreateForm form, BindingResult bindingResult) {
 // 登録処理は省略
         URI url = UriComponentsBuilder.fromUriString("http://localhost:8080")
                 .path("/names/id")
                 .build()
                 .toUri();
-        return ResponseEntity.created(url).body("name successfully created");
-    }
-        @PostMapping("/names")
-        public String confirm(@Validated CreateForm form, BindingResult bindingResult) {
-            if (bindingResult.hasErrors()) {
-                return "入力値が不正です。";
-            }else{
-                return "ok";
-            }
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body("名前の情報が未入力です");
+        } else {
+            return ResponseEntity.created(url).body("name successfully created");
         }
-
+    }
 
     @PatchMapping("/names/{id}")
-    public ResponseEntity<Map<String,String>> update(@PathVariable("id") int id, @RequestBody UpdateForm form){
+    public ResponseEntity<Map<String, String>> update(@PathVariable("id") int id, @RequestBody UpdateForm form) {
         return ResponseEntity.ok(Map.of("Massage", "Update is success!"));
     }
 
     @DeleteMapping("/names/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") int id){
+    public ResponseEntity<String> delete(@PathVariable("id") int id) {
         //削除処理は省略
         return ResponseEntity.ok("削除は正常に実行されました");
     }
