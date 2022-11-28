@@ -19,17 +19,14 @@ public class NameController {
     }
 
     @PostMapping("/names")
-    public ResponseEntity<String> create(@Validated @RequestBody CreateForm form, BindingResult bindingResult) {
+    public ResponseEntity<String> create(@Validated @RequestBody CreateForm form) {
 // 登録処理は省略
         URI url = UriComponentsBuilder.fromUriString("http://localhost:8080")
                 .path("/names/id")
                 .build()
                 .toUri();
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body("名前の情報が未入力です");
-        } else {
-            return ResponseEntity.created(url).body("name successfully created");
-        }
+
+        return ResponseEntity.created(url).body("name successfully created");
     }
 
     @PatchMapping("/names/{id}")
